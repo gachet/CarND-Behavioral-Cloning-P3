@@ -100,9 +100,21 @@ def random_shadow(image):
 
     return image
 
+
+def histogram_equalization(image):
+    """
+    http://stackoverflow.com/questions/15007304/histogram-equalization-not-working-on-color-image-opencv
+    the first step is to convert the color space of the image from RGB into one of the color space which separates intensity values from color components.
+    Perform HE of the intensity plane.
+    """
+    image1 = cv2.cvtColor(image,cv2.CV_RBG2YCrCb)
+    image1[:, :, 0] = cv2.equalizeHist(image1[:, :, 0])
+    return cv2.cvtColor(image,cv2.CV_YCrCb2RBG)
+
+
 def identity(image):
     return image
     
     
 transformations = [rotateImage, shift, bilateral_filter, salt_and_pepper, speckle_noise, horizontal_flipping, \
-                   random_light, random_shadow, identity]
+                   random_light, random_shadow, histogram_equalization, identity]
