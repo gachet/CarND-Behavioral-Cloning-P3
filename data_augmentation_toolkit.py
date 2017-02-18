@@ -112,9 +112,20 @@ def histogram_equalization(image):
     return cv2.cvtColor(image,cv2.CV_YCrCb2RBG)
 
 
+def pseudo_shift(image, mode, value=50):
+    if mode == 'left_camera':
+        image1 = image[:, value:]
+    elif mode == 'right_camera':
+        image1 = image[:, :value]
+    elif mode == 'center_camera':
+        image1 = image[:, value/2:-value/2]
+        
+    return image1
+
+
 def identity(image):
     return image
     
     
 transformations = [rotateImage, shift, bilateral_filter, salt_and_pepper, speckle_noise, horizontal_flipping, \
-                   random_light, random_shadow, histogram_equalization, identity]
+                   random_light, random_shadow, histogram_equalization, pseudo_shift, identity]
