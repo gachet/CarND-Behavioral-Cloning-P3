@@ -113,6 +113,9 @@ def histogram_equalization(image):
 
 
 def pseudo_shift(image, mode, value=50):
+    """
+    Simulate camera horizontal shifting by cropping
+    """
     if mode == 'left_camera':
         image1 = image[:, value:]
     elif mode == 'right_camera':

@@ -16,6 +16,8 @@ from keras.models import load_model
 import h5py
 from keras import __version__ as keras_version
 
+import data_augmentation_toolkit as data_aug
+
 sio = socketio.Server()
 app = Flask(__name__)
 model = None
@@ -57,10 +59,13 @@ class Preprocessing:
         return a + (x-x.min())*(b-a)/(x.max() - x.min())
     
     def _crop(self, x):
-            return x[50:150, :] # See Explore dataset + Experimental setup.ipynb
+            return x[60:150, :] # See Explore dataset + Experimental setup.ipynb
+        
+    def _camera_position(self, x):
+        return data_aug.pseudo_shift(x, 'center_camera', 50) # See data_augmentation_toolkit.py
 
     def apply(self, x):
-        return self._normalize(self._crop(x))
+        return self._normalize(self._camera_position(self._crop(x)))
 
 preprocessor = Preprocessing()
 			
