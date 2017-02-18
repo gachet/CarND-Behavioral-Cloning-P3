@@ -47,7 +47,23 @@ controller = SimplePIController(0.1, 0.002)
 set_speed = 9
 controller.set_desired(set_speed)
 
+class Preprocessing:
 
+    def __init__(self):
+        pass
+
+    def _normalize(self, x, a=0, b=1):
+        x = x.astype(np.float32)
+        return a + (x-x.min())*(b-a)/(x.max() - x.min())
+    
+    def _crop(self, x):
+            return x[50:150, :] # See Explore dataset + Experimental setup.ipynb
+
+    def apply(self, x):
+        return self._normalize(self._crop(x))
+
+preprocessor = Preprocessing()
+			
 @sio.on('telemetry')
 def telemetry(sid, data):
     if data:
@@ -61,11 +77,13 @@ def telemetry(sid, data):
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
         image_array = np.asarray(image)
-        steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
+        image_array = preprocessor.apply(image_array)
+        steering_angle = float(model.predict(image_array[np.newaxis, :, :, :], batch_size=1))
 
         throttle = controller.update(float(speed))
 
-        print(steering_angle, throttle)
+        print("steering angle: ", steering_angle)
+        print("throttle: ", throttle)
         send_control(steering_angle, throttle)
 
         # save frame
@@ -120,6 +138,8 @@ if __name__ == '__main__':
               ', but the model was built using ', model_version)
 
     model = load_model(args.model)
+	
+    print("Keras model loaded")
 
     if args.image_folder != '':
         print("Creating image folder at {}".format(args.image_folder))
