@@ -119,9 +119,9 @@ def pseudo_shift(image, mode, value=50):
     if mode == 'left_camera':
         image1 = image[:, value:]
     elif mode == 'right_camera':
-        image1 = image[:, :value]
+        image1 = image[:, :-value]
     elif mode == 'center_camera':
-        image1 = image[:, value/2:-value/2]
+        image1 = image[:, int(value/2):int(-value/2)]
         
     return image1
 
