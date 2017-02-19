@@ -107,9 +107,9 @@ def histogram_equalization(image):
     the first step is to convert the color space of the image from RGB into one of the color space which separates intensity values from color components.
     Perform HE of the intensity plane.
     """
-    image1 = cv2.cvtColor(image,cv2.CV_RBG2YCrCb)
-    image1[:, :, 0] = cv2.equalizeHist(image1[:, :, 0])
-    return cv2.cvtColor(image,cv2.CV_YCrCb2RBG)
+    image1 = cv2.cvtColor(image,cv2.COLOR_RGB2HSV)
+    image1[:, :, 2] = cv2.equalizeHist(image1[:, :, 2])
+    return cv2.cvtColor(image1,cv2.COLOR_HSV2RGB)
 
 
 def pseudo_shift(image, mode, value=50):
