@@ -1,4 +1,4 @@
-#**Behavioral Cloning** 
+# **Behavioral Cloning** 
 
 The goals / steps of this project are the following:
 
@@ -9,12 +9,12 @@ The goals / steps of this project are the following:
 * Summarize the results with a written report
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
-###Files Submitted & Code Quality
+### Files Submitted & Code Quality
 
-####1. Submission includes all required files and can be used to run the simulator in autonomous mode
+#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following relevant files (the rest of the files are not required for the submission):
 
@@ -31,7 +31,7 @@ My project includes the following relevant files (the rest of the files are not 
 
 
 
-####2. Submission includes functional code
+#### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing:
 
 ```bash
@@ -44,13 +44,13 @@ python drive_new.py model.09-0.009.h5
 
 ```
 
-####3. Submission code is usable and readable
+#### 3. Submission code is usable and readable
 
 model.ipynb file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. An appropriate model architecture has been employed
+#### 1. An appropriate model architecture has been employed
 
 My model follows the Nvidia architecture defined in the paper "End to End Learning for Self-Driving Cars". However I was not able to find which activation function they use (-3 points for non-reproducibility) so I chose ReLU, which seems a standard one these days and gave me good performance in other projects. 
 
@@ -59,7 +59,7 @@ There is a slightly change in the architecture as I did not include a normalizat
 About the architecture.. well. I don't like strides greater than one as I read they are more destructive than max pooling layers but, I worked for Nvidia guys, so I decided to give it a try.
 
 
-####2. Attempts to reduce overfitting in the model
+#### 2. Attempts to reduce overfitting in the model
 
 I dealt with overfitting problem in two ways: getting a lot of data and an agressive data augmentation.
 
@@ -83,7 +83,7 @@ Despite this stochastic approach seems to be not working as expected (almost a f
 
 
 
-####3. Model parameter tuning
+#### 3. Model parameter tuning
 
 The optimizer used is an Adam optimizer with the default learning rate, which seems to be an standard optimizers nowadays. Also because I wanted to avoid standard gradient descent as it is very "simple" and it is explicitly not recommended by Andrew Ng in his Machine Learning course (I remember he said it is perfect for education, to teach the concept but in practice there are better options).
 
@@ -97,7 +97,7 @@ Batch size was set to 64 as it was a value I found good enough in other exercise
 
 
 
-####4. Creation of the Training Set & Training Process
+#### 4. Creation of the Training Set & Training Process
 <a name="Creation-of-the-Training-Set-&-Training-Process"/></a>
 
 Before a suggestion was included in the Udacity classroom about how to do the splits, two approaches were hanging around my head:
@@ -109,14 +109,14 @@ Posterior to creating my dataset, the Udacity classroom was updated with some ti
 
 Note: only data from track 1 was used for training and validation.
 
-####5. Appropriate training data
+#### 5. Appropriate training data
 
 After training the first model I saw that my car was waving too much. It was unable to do a complete lap: as soon as the car saw the water, it jumped directly to it. Not enough recovery data? Wrong hyperparameters to the model?. 
 
 I decided to create a video with the dataset so I can quickly inspect all the images (around 52.000). That is how I found that the dataset hadn't the expected quality. Was full of images of my first attempt to dominate the simulator -> full of images crashing with trees, getting outside the path and even driving underwater (yes, it is possible). So I spend some time removing the half of those mistaken images: the half that I was going outside the path, but keeping the half of them where I was coming back to the path, so my car learnt how to recover to the center.
 
 
-####6. Results
+#### 6. Results
 
 This is the first attempt on track 1:
 
